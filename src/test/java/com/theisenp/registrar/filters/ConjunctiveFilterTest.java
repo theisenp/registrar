@@ -1,9 +1,6 @@
 package com.theisenp.registrar.filters;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +27,7 @@ public class ConjunctiveFilterTest {
 
 	@Test
 	public void testConstructVarargs() {
-		Filter filter = new ConjunctiveFilter(mockFilter(true), mockFilter(true));
+		Filter filter = new ConjunctiveFilter(Filter.PASS, Filter.PASS);
 		assertThat(filter.filter(int.class)).isTrue();
 	}
 
@@ -42,47 +39,37 @@ public class ConjunctiveFilterTest {
 
 	@Test
 	public void testConstructCollection() {
-		Filter filter = new ConjunctiveFilter(Arrays.asList(mockFilter(true), mockFilter(true)));
+		Filter filter = new ConjunctiveFilter(Arrays.asList(Filter.PASS, Filter.PASS));
 		assertThat(filter.filter(int.class)).isTrue();
 	}
 
 	@Test
 	public void testSingleFilterFail() {
-		Filter filter = new ConjunctiveFilter(mockFilter(false));
+		Filter filter = new ConjunctiveFilter(Filter.FAIL);
 		assertThat(filter.filter(int.class)).isFalse();
 	}
 
 	@Test
 	public void testSingleFilterPass() {
-		Filter filter = new ConjunctiveFilter(mockFilter(true));
+		Filter filter = new ConjunctiveFilter(Filter.PASS);
 		assertThat(filter.filter(int.class)).isTrue();
 	}
 
 	@Test
 	public void testMultipleFiltersAllFail() {
-		Filter filter = new ConjunctiveFilter(mockFilter(false), mockFilter(false));
+		Filter filter = new ConjunctiveFilter(Filter.FAIL, Filter.FAIL);
 		assertThat(filter.filter(int.class)).isFalse();
 	}
 
 	@Test
 	public void testMultipleFiltersSingleFail() {
-		Filter filter = new ConjunctiveFilter(mockFilter(true), mockFilter(false));
+		Filter filter = new ConjunctiveFilter(Filter.PASS, Filter.FAIL);
 		assertThat(filter.filter(int.class)).isFalse();
 	}
 
 	@Test
 	public void testMultipleFiltersAllPass() {
-		Filter filter = new ConjunctiveFilter(mockFilter(true), mockFilter(true));
+		Filter filter = new ConjunctiveFilter(Filter.PASS, Filter.PASS);
 		assertThat(filter.filter(int.class)).isTrue();
-	}
-
-	/**
-	 * @param pass
-	 * @return A {@link Filter} that always passes or fails
-	 */
-	private static Filter mockFilter(boolean pass) {
-		Filter result = mock(Filter.class);
-		when(result.filter(any(Class.class))).thenReturn(pass);
-		return result;
 	}
 }
