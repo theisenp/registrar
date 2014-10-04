@@ -23,6 +23,14 @@ import com.theisenp.registrar.filters.Filter;
 public class Registrar {
 	public static final String JAR_PATTERN = "^.*\\.(?i)(jar)$";
 	public static final String CLASS_PATTERN = "^.*\\.(?i)(class)$";
+	public static final String DEFAULT_CLASSPATH;
+	static {
+		StringBuilder builder = new StringBuilder();
+		builder.append(System.getenv("CLASSPATH"));
+		builder.append(File.pathSeparator);
+		builder.append(System.getProperty("java.class.path"));
+		DEFAULT_CLASSPATH = builder.toString();
+	}
 
 	/**
 	 * @return A {@link Set} of every accessible class on the default classpath
@@ -30,7 +38,7 @@ public class Registrar {
 	 * @throws ClassNotFoundException
 	 */
 	public static Set<Class<?>> find() throws IOException, ClassNotFoundException {
-		return find(Filter.PASS);
+		return find(Filter.PASS, DEFAULT_CLASSPATH);
 	}
 
 	/**
@@ -41,10 +49,7 @@ public class Registrar {
 	 * @throws ClassNotFoundException
 	 */
 	public static Set<Class<?>> find(Filter filter) throws IOException, ClassNotFoundException {
-		StringBuilder builder = new StringBuilder();
-		builder.append(System.getenv("CLASSPATH"));
-		builder.append(System.getProperty("java.class.path"));
-		return find(filter, builder.toString());
+		return find(filter, DEFAULT_CLASSPATH);
 	}
 
 	/**
