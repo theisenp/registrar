@@ -3,6 +3,7 @@ package com.theisenp.registrar.filters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * A composite {@link Filter} that only passes if each of its child filters
@@ -11,7 +12,7 @@ import java.util.Collection;
  * @author patrick.theisen
  */
 public class ConjunctiveFilter implements Filter {
-	private final Collection<Filter> filters;
+	private final List<Filter> filters = new ArrayList<>();
 
 	/**
 	 * @param filters
@@ -24,7 +25,7 @@ public class ConjunctiveFilter implements Filter {
 	 * @param filters
 	 */
 	public ConjunctiveFilter(Collection<Filter> filters) {
-		this.filters = new ArrayList<>(filters);
+		this.filters.addAll(filters);
 		if(filters.isEmpty()) {
 			String message = "You must provide at least one child filter";
 			throw new IllegalArgumentException(message);
