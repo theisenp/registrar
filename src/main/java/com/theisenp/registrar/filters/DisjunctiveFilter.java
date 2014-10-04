@@ -24,6 +24,10 @@ public class DisjunctiveFilter implements Filter {
 	 */
 	public DisjunctiveFilter(Collection<Filter> filters) {
 		this.filters = new ArrayList<>(filters);
+		if(filters.isEmpty()) {
+			String message = "You must provide at least one child filter";
+			throw new IllegalArgumentException(message);
+		}
 	}
 
 	@Override

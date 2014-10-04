@@ -25,6 +25,10 @@ public class ConjunctiveFilter implements Filter {
 	 */
 	public ConjunctiveFilter(Collection<Filter> filters) {
 		this.filters = new ArrayList<>(filters);
+		if(filters.isEmpty()) {
+			String message = "You must provide at least one child filter";
+			throw new IllegalArgumentException(message);
+		}
 	}
 
 	@Override
