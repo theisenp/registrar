@@ -12,4 +12,26 @@ public interface Filter {
 	 * @return True if the given {@link Class} passes the filter. Else, false.
 	 */
 	public boolean filter(Class<?> clazz);
+
+	/**
+	 * A {@link Filter} that always passes
+	 */
+	public static Filter PASS = new Filter() {
+
+		@Override
+		public boolean filter(Class<?> clazz) {
+			return true;
+		}
+	};
+
+	/**
+	 * A {@link Filter} that always fails
+	 */
+	public static Filter FAIL = new Filter() {
+
+		@Override
+		public boolean filter(Class<?> clazz) {
+			return false;
+		}
+	};
 }
