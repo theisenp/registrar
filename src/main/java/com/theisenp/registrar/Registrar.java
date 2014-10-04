@@ -118,7 +118,7 @@ public class Registrar {
 			if(path.matches(CLASS_PATTERN)) {
 				String name = path.replace(".class", "").replace("/", ".").replace("\\", ".");
 				Class<?> clazz = loader.loadClass(name);
-				if(clazz != null) {
+				if(clazz != null && filter.filter(clazz)) {
 					result.add(clazz);
 				}
 
